@@ -6,12 +6,14 @@ import Input from '../components/Input';
 import TextArea from '../components/TextArea';  
 import Select from '../components/Select';
 import Button from '../components/Button'
+import { UserList } from '../users.component';
 
 class FormContainer extends Component {  
   constructor(props) {
     super(props);
 
     this.state = {
+      
       newUser: {
         name: '',
         age: '',
@@ -22,9 +24,12 @@ class FormContainer extends Component {
       },
 
       genderOptions: ['Male', 'Female', 'Others'],
-      skillOptions: ['Programming', 'Development', 'Design', 'Testing']
+      skillOptions: ['Programming', 'Development', 'Design', 'Testing'],
+
+      Users: []
 
     }
+
     this.handleTextArea = this.handleTextArea.bind(this);
     this.handleAge = this.handleAge.bind(this);
     this.handleFullName = this.handleFullName.bind(this);
@@ -46,7 +51,7 @@ class FormContainer extends Component {
 
   handleAge(e) {
        let value = e.target.value;
-   this.setState( prevState => ({ newUser : 
+        this.setState( prevState => ({ newUser : 
         {...prevState.newUser, age: value
         }
       }), () => console.log(this.state.newUser))
@@ -62,7 +67,7 @@ class FormContainer extends Component {
   }
 
   handleTextArea(e) {
-    console.log("Inside handleTextArea");
+    //console.log("Inside handleTextArea");
     let value = e.target.value;
     this.setState(prevState => ({
       newUser: {
@@ -91,9 +96,10 @@ class FormContainer extends Component {
 
   handleFormSubmit(e) {
     e.preventDefault();
-    let userData = this.state.newUser;
-
-    fetch('http://example.com',{
+    this.setState( prevState => {Users: this.state.Users.push(this.state.newUser)});
+    //console.log("the Users: ", this.state.Users);
+    /*
+    fetch('http://localhost:3000',{
         method: "POST",
         body: JSON.stringify(userData),
         headers: {
@@ -105,6 +111,7 @@ class FormContainer extends Component {
           console.log("Successful" + data);
         })
     })
+    */
   }   
 
   handleClearForm(e) {
@@ -123,24 +130,24 @@ class FormContainer extends Component {
 
   render() {
     return (
-    
-        <form className="container-fluid" onSubmit={this.handleFormSubmit}>
-       
-            <Input inputType={'text'}
-                   title= {'Full Name'} 
-                   name= {'name'}
-                   value={this.state.newUser.name} 
-                   placeholder = {'Enter your name'}
-                   handleChange = {this.handleInput}
-                   
-                   /> {/* Name of the user */}
+      <div>
+              <form className="container-fluid" onSubmit={this.handleFormSubmit}>
+            
+            <Input inputtype={'text'}
+                    title= {'Full Name'} 
+                    name= {'name'}
+                    value={this.state.newUser.name} 
+                    placeholder = {'Enter your name'}
+                    handlechange = {this.handleInput}
+                    
+                    /> {/* Name of the user */}
         
-          <Input inputType={'number'} 
+          <Input inputtype={'number'} 
                 name={'age'}
-                 title= {'Age'} 
-                 value={this.state.newUser.age} 
-                placeholder = {'Enter your age'}
-                 handleChange={this.handleAge} /> {/* Age */} 
+                  title= {'Age'} 
+                  value={this.state.newUser.age} 
+                  placeholder = {'Enter your age'}
+                  handlechange={this.handleAge} /> {/* Age */} 
 
 
           <Select title={'Gender'}
@@ -148,20 +155,20 @@ class FormContainer extends Component {
                   options = {this.state.genderOptions} 
                   value = {this.state.newUser.gender}
                   placeholder = {'Select Gender'}
-                  handleChange = {this.handleInput}
+                  handlechange = {this.handleInput}
                   /> {/* Age Selection */}
           <CheckBox  title={'Skills'}
                   name={'skills'}
                   options={this.state.skillOptions}
                   selectedOptions = { this.state.newUser.skills}
-                  handleChange={this.handleCheckBox}
-                   /> {/* Skill */}
+                  handlechange={this.handleCheckBox}
+                    /> {/* Skill */}
           <TextArea
             title={'About you.'}
             rows={10}
             value={this.state.newUser.about}
             name={'currentPetInfo'}
-            handleChange={this.handleTextArea}
+            handlechange={this.handleTextArea}
             placeholder={'Describe your past experience and skills'} />{/* About you */}
 
           <Button 
@@ -173,12 +180,16 @@ class FormContainer extends Component {
           
           <Button 
             action = {this.handleClearForm}
-            type = {'secondary'}
+            type = {'success'}
             title = {'Clear'}
             style={buttonStyle}
           /> {/* Clear the form */}
-          
+
         </form>
+
+        <UserList users={this.state.Users} />
+      </div>
+
   
     );
   }

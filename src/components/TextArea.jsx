@@ -1,8 +1,10 @@
 import React from 'react';
 
 
-const TextArea = (props) => (  
-  <div className="form-group">
+const TextArea = (props) => {
+  console.log(props)
+  return (
+    <div className="form-group">
     <label className="form-label">{props.title}</label>
     <textarea
       className="form-control"
@@ -10,9 +12,13 @@ const TextArea = (props) => (
       rows={props.rows}
       cols = {props.cols}
       value={props.value}
-      onChange={props.handleChange}
+      onChange={props.handlechange}
       placeholder={props.placeholder} />
   </div>
-);
+  );
+
+}
+  
+
 
 export default TextArea;
