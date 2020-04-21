@@ -26,7 +26,7 @@ class FormContainer extends Component {
       genderOptions: ['Male', 'Female', 'Others'],
       skillOptions: ['Programming', 'Development', 'Design', 'Testing'],
 
-      Users: []
+      users: []
 
     }
 
@@ -34,7 +34,6 @@ class FormContainer extends Component {
     this.handleAge = this.handleAge.bind(this);
     this.handleFullName = this.handleFullName.bind(this);
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
-    this.handleClearForm = this.handleClearForm.bind(this);
     this.handleCheckBox = this.handleCheckBox.bind(this);
     this.handleInput = this.handleInput.bind(this);
   }
@@ -60,7 +59,7 @@ class FormContainer extends Component {
   handleInput(e) {
        let value = e.target.value;
        let name = e.target.name;
-   this.setState( prevState => ({ newUser : 
+        this.setState( prevState => ({ newUser : 
         {...prevState.newUser, [name]: value
         }
       }), () => console.log(this.state.newUser))
@@ -96,9 +95,17 @@ class FormContainer extends Component {
 
   handleFormSubmit(e) {
     e.preventDefault();
-    this.setState( prevState => {Users: this.state.Users.push(this.state.newUser)});
-    //console.log("the Users: ", this.state.Users);
-    /*
+      this.setState({ 
+        newUser: {
+          name: '',
+          age: '',
+          gender: '',
+          skills: [],
+          about: ''
+        },
+        users: [...this.state.users, this.state.newUser]
+      })
+    /*  
     fetch('http://localhost:3000',{
         method: "POST",
         body: JSON.stringify(userData),
@@ -113,20 +120,6 @@ class FormContainer extends Component {
     })
     */
   }   
-
-  handleClearForm(e) {
-  
-      e.preventDefault();
-      this.setState({ 
-        newUser: {
-          name: '',
-          age: '',
-          gender: '',
-          skills: [],
-          about: ''
-        },
-      })
-  }
 
   render() {
     return (
@@ -177,17 +170,11 @@ class FormContainer extends Component {
               title = {'Submit'} 
             style={buttonStyle}
           /> { /*Submit */ }
-          
-          <Button 
-            action = {this.handleClearForm}
-            type = {'success'}
-            title = {'Clear'}
-            style={buttonStyle}
-          /> {/* Clear the form */}
 
         </form>
 
-        <UserList users={this.state.Users} />
+        <UserList users={this.state.users} />
+      
       </div>
 
   
